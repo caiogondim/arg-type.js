@@ -6,8 +6,12 @@
 
 const typeFrom = require('type-from')
 
+function inObject(obj, val) {
+  return  Object.keys(obj).map(key => obj[key]).indexOf(val) !== -1
+}
+
 function argType(arg, typeCheck) {
-  if (Object.values(types).includes(typeCheck)) {
+  if (inObject(types, typeCheck)) {
     typeCheck(arg)
   } else {
     if (!typeCheck(arg)) {
