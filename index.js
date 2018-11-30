@@ -11,7 +11,7 @@ function inObject(obj, val) {
 }
 
 function argType(arg, typeCheck) {
-  if (inObject(types, typeCheck)) {
+  if (inObject(argType.types, typeCheck)) {
     typeCheck(arg)
   } else {
     if (!typeCheck(arg)) {
@@ -20,23 +20,44 @@ function argType(arg, typeCheck) {
   }
 }
 
-const types = {
+argType.types = {
+  array: (arg) => {
+    if (typeFrom(arg) !== 'array') throw new TypeError(`Expected \`${arg}\` to be an array`)
+  },
+  bool: (arg) => {
+    if (typeFrom(arg) !== 'boolean') throw new TypeError(`Expected \`${arg}\` to be a boolean`)
+  },
+  func: (arg) => {
+    if (typeFrom(arg) !== 'function') throw new TypeError(`Expected \`${arg}\` to be a function`)
+  },
+  number: (arg) => {
+    if (typeFrom(arg) !== 'number') throw new TypeError(`Expected \`${arg}\` to be a number`)
+  },
+  object: (arg) => {
+    if (typeFrom(arg) !== 'object') throw new TypeError(`Expected \`${arg}\` to be a object`)
+  },
   string: (arg) => {
     if (typeFrom(arg) !== 'string') throw new TypeError(`Expected \`${arg}\` to be a string`)
   },
-  array: (arg) => {
-    if (typeFrom(arg) !== 'array') throw new TypeError(`Expected \`${arg}\` to be an array`)
+  symbol: (arg) => {
+    if (typeFrom(arg) !== 'symbol') throw new TypeError(`Expected \`${arg}\` to be a symbol`)
+  },
+  instanceOf: (constructor) => {
+    return (arg) => {
+      if (!(arg instanceof constructor)) throw new TypeError(`Expected \`${arg}\` to be a instance of ${constructor}`)
+      return true
+    }
+  },
+  oneOf: (enumerated) => {
+    return (arg) => {
+      const isValid = enumerated.some(val => val === arg)
+
+      if (!isValid) {
+        throw new TypeError(`Expected \`${arg}\` to be one of ${enumerated}`)
+      }
+      return true
+    }
   }
 }
 
-function foo(a, b, c) {
-  try {
-    argType(a, types.string)
-    argType(b, types.array)
-    argType(c, arg => arg === 3)
-  } catch (error) {
-    console.warn(error)
-  }
-}
-
-foo('1', [2], 4)
+module.exports = argType
