@@ -80,3 +80,17 @@ test('oneOf', () => {
   expect(() => foo(3)).not.toThrow(TypeError)
   expect(() => foo(4)).toThrow(TypeError)
 })
+
+test('oneOfType', () => {
+  function foo(a) {
+    argType(a, types.oneOfType([
+      types.number,
+      types.string
+    ]))
+  }
+
+  expect(() => foo(1)).not.toThrow(TypeError)
+  expect(() => foo('abc')).not.toThrow(TypeError)
+  expect(() => foo(true)).toThrow(TypeError)
+  expect(() => foo([1, 2])).toThrow(TypeError)
+})
