@@ -82,10 +82,15 @@ test('oneOf', () => {
 })
 
 test('oneOfType', () => {
+  function isFunction(arg) {
+    return typeof arg === 'function'
+  }
+
   function foo(a) {
     argType(a, types.oneOfType([
       types.number,
-      types.string
+      types.string,
+      isFunction
     ]))
   }
 
@@ -93,4 +98,5 @@ test('oneOfType', () => {
   expect(() => foo('abc')).not.toThrow(TypeError)
   expect(() => foo(true)).toThrow(TypeError)
   expect(() => foo([1, 2])).toThrow(TypeError)
+  expect(() => foo(() => {})).not.toThrow(TypeError)
 })

@@ -11,38 +11,42 @@ function inObject(obj, val) {
 }
 
 function argType(arg, typeCheck) {
-  if (inObject(argType.types, typeCheck)) {
-    typeCheck(arg)
-  } else {
-    // If your custom validation function doesn't thrown an error, a generic one
-    // will be used.
-    if (!typeCheck(arg)) {
-      throw new TypeError(`Expected \`${arg}\` to pass custom type validation.`)
-    }
+  const isValid = typeCheck(arg)
+  // If your custom validation function doesn't thrown an error, a generic one
+  // will be used.
+  if (!isValid) {
+    throw new TypeError(`Expected \`${arg}\` to pass custom type validation.`)
   }
 }
 
 argType.types = {
   array: (arg) => {
     if (typeFrom(arg) !== 'array') throw new TypeError(`Expected \`${arg}\` to be an array`)
+      return true
   },
   bool: (arg) => {
     if (typeFrom(arg) !== 'boolean') throw new TypeError(`Expected \`${arg}\` to be a boolean`)
+    return true
   },
   func: (arg) => {
     if (typeFrom(arg) !== 'function') throw new TypeError(`Expected \`${arg}\` to be a function`)
+    return true
   },
   number: (arg) => {
     if (typeFrom(arg) !== 'number') throw new TypeError(`Expected \`${arg}\` to be a number`)
+    return true
   },
   object: (arg) => {
     if (typeFrom(arg) !== 'object') throw new TypeError(`Expected \`${arg}\` to be a object`)
+    return true
   },
   string: (arg) => {
     if (typeFrom(arg) !== 'string') throw new TypeError(`Expected \`${arg}\` to be a string`)
+    return true
   },
   symbol: (arg) => {
     if (typeFrom(arg) !== 'symbol') throw new TypeError(`Expected \`${arg}\` to be a symbol`)
+    return true
   },
   instanceOf: (constructor) => {
     // arg type here
@@ -65,8 +69,8 @@ argType.types = {
     return (arg) => {
       const isValid = typeChecks.some(typeCheck => {
         try {
-          typeCheck(arg)
-          return true
+          const output = typeCheck(arg)
+          return output === false ? false : true
         } catch (error) {
           return false
         }
