@@ -82,6 +82,19 @@ argType.types = {
 
       return true
     }
+  },
+  arrayOf: (typeCheck) => {
+    return (args) => {
+      const isValid = args.every(arg => {
+        return typeCheck(arg)
+      })
+
+      if (!isValid) {
+        throw new TypeError(`Invalid arg \`${arg}\` supplied`)
+      }
+
+      return true
+    }
   }
 }
 

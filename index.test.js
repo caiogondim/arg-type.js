@@ -100,3 +100,14 @@ test('oneOfType', () => {
   expect(() => foo([1, 2])).toThrow(TypeError)
   expect(() => foo(() => {})).not.toThrow(TypeError)
 })
+
+test('arrayOf', () => {
+  function foo(a) {
+    argType(a, types.arrayOf(types.number))
+  }
+
+  expect(() => foo(1)).toThrow(TypeError)
+  expect(() => foo('abc')).toThrow(TypeError)
+  expect(() => foo(true)).toThrow(TypeError)
+  expect(() => foo([1, 2])).not.toThrow(TypeError)
+})
