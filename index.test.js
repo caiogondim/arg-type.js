@@ -111,3 +111,18 @@ test('arrayOf', () => {
   expect(() => foo(true)).toThrow(TypeError)
   expect(() => foo([1, 2])).not.toThrow(TypeError)
 })
+
+test('exact', () => {
+  function foo(a) {
+    argType(a, types.exact({
+      b: types.number,
+      c: types.bool
+    }))
+  }
+
+  expect(() => foo(1)).toThrow(TypeError)
+  expect(() => foo(false)).toThrow(TypeError)
+  expect(() => foo('abc')).toThrow(TypeError)
+  expect(() => foo({ b: 1, c: true, d: 2 })).toThrow(TypeError)
+  expect(() => foo({ b: 1, c: true })).not.toThrow(TypeError)
+})

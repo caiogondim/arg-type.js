@@ -2,7 +2,7 @@
 
 // Reference:
 // - https://github.com/sindresorhus/ow
-// - https://reactjs.org/docs/typechecking-with-proptypes.html
+// - https://github.com/facebook/prop-types
 
 const typeFrom = require('type-from')
 
@@ -91,6 +91,33 @@ argType.types = {
 
       if (!isValid) {
         throw new TypeError(`Invalid arg \`${arg}\` supplied`)
+      }
+
+      return true
+    }
+  },
+  exact: (strictShape) => {
+    const strictShapeKeys = Object.keys(strictShape)
+
+    return (arg) => {
+      const argKeys = Object.keys(arg)
+
+      if (strictShapeKeys.length !== argKeys.length) {
+        throw new TypeError(`Invalid exact shape of \`${arg}\``)
+      }
+
+      const isValid = strictShapeKeys.every(strictShapeKey => {
+        try {
+          const typeCheck = strictShape[strictShapeKey]
+          const output = typeCheck(arg[strictShapeKey])
+          return output === false ? false : true
+        } catch (error) {
+          return false
+        }
+      })
+
+      if (!isValid) {
+        throw new TypeError(`Invalid exact shape of \`${arg}\``)
       }
 
       return true
