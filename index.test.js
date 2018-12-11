@@ -1,10 +1,12 @@
 // @ts-check
 
+/* global test, expect */
+
 const argType = require('./')
 const { types } = require('./')
 
 test('array', () => {
-  function foo(a) {
+  function foo (a) {
     argType(a, types.array)
   }
 
@@ -14,7 +16,7 @@ test('array', () => {
 })
 
 test('boolean', () => {
-  function foo(a) {
+  function foo (a) {
     argType(a, types.bool)
   }
 
@@ -24,7 +26,7 @@ test('boolean', () => {
 })
 
 test('number', () => {
-  function foo(a) {
+  function foo (a) {
     argType(a, types.number)
   }
 
@@ -34,7 +36,7 @@ test('number', () => {
 })
 
 test('object', () => {
-  function foo(a) {
+  function foo (a) {
     argType(a, types.object)
   }
 
@@ -45,7 +47,7 @@ test('object', () => {
 })
 
 test('object', () => {
-  function foo(a) {
+  function foo (a) {
     argType(a, types.symbol)
   }
 
@@ -59,7 +61,7 @@ test('object', () => {
 test('instanceOf', () => {
   class Bar {}
   const bar = new Bar()
-  function foo(a) {
+  function foo (a) {
     argType(a, types.instanceOf(Bar))
   }
 
@@ -71,7 +73,7 @@ test('instanceOf', () => {
 })
 
 test('oneOf', () => {
-  function foo(a) {
+  function foo (a) {
     argType(a, types.oneOf([1, 2, 3]))
   }
 
@@ -82,11 +84,11 @@ test('oneOf', () => {
 })
 
 test('oneOfType', () => {
-  function isFunction(arg) {
+  function isFunction (arg) {
     return typeof arg === 'function'
   }
 
-  function foo(a) {
+  function foo (a) {
     argType(a, types.oneOfType([
       types.number,
       types.string,
@@ -102,7 +104,7 @@ test('oneOfType', () => {
 })
 
 test('arrayOf', () => {
-  function foo(a) {
+  function foo (a) {
     argType(a, types.arrayOf(types.number))
   }
 
@@ -113,7 +115,7 @@ test('arrayOf', () => {
 })
 
 test('exact', () => {
-  function foo(a) {
+  function foo (a) {
     argType(a, types.exact({
       b: types.number,
       c: types.bool

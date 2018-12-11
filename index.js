@@ -6,11 +6,7 @@
 
 const typeFrom = require('type-from')
 
-function inObject(obj, val) {
-  return  Object.keys(obj).map(key => obj[key]).indexOf(val) !== -1
-}
-
-function argType(arg, typeCheck) {
+function argType (arg, typeCheck) {
   const isValid = typeCheck(arg)
   // If your custom validation function doesn't thrown an error, a generic one
   // will be used.
@@ -22,7 +18,7 @@ function argType(arg, typeCheck) {
 argType.types = {
   array: (arg) => {
     if (typeFrom(arg) !== 'array') throw new TypeError(`Expected \`${arg}\` to be an array`)
-      return true
+    return true
   },
   bool: (arg) => {
     if (typeFrom(arg) !== 'boolean') throw new TypeError(`Expected \`${arg}\` to be a boolean`)
@@ -70,7 +66,7 @@ argType.types = {
       const isValid = typeChecks.some(typeCheck => {
         try {
           const output = typeCheck(arg)
-          return output === false ? false : true
+          return output !== false
         } catch (error) {
           return false
         }
@@ -90,7 +86,7 @@ argType.types = {
       })
 
       if (!isValid) {
-        throw new TypeError(`Invalid arg \`${arg}\` supplied`)
+        throw new TypeError(`Invalid arg \`${args}\` supplied`)
       }
 
       return true
@@ -110,7 +106,7 @@ argType.types = {
         try {
           const typeCheck = strictShape[strictShapeKey]
           const output = typeCheck(arg[strictShapeKey])
-          return output === false ? false : true
+          return output !== false
         } catch (error) {
           return false
         }
