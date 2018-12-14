@@ -1,7 +1,7 @@
 {
-  "name": "tyrg.js",
+  "name": "arg-type",
   "version": "1.0.0",
-  "description": "",
+  "description": "Like prop-types, but for vanilla JavaScript",
   "main": "index.js",
   "dependencies": {
     "type-from": "1.0.1"
@@ -19,9 +19,9 @@
     "type": "git",
     "url": "git+https://github.com/caiogondim/tyrg.js.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["types"],
+  "author": "Caio Gondim",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/caiogondim/tyrg.js/issues"
   },
