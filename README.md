@@ -4,14 +4,14 @@
 ## Installation
 
 ```bash
-npm i -S arg-type
+npm i -S @caiogondim/arg-type
 ```
 
 ## Usage
 
 Example:
 ```js
-import argType, { types } from 'arg-type'
+import argType, { types } from '@caiogondim/arg-type'
 
 function sum(a, b) {
   argType(a, types.number)
