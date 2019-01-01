@@ -46,7 +46,7 @@ test('object', () => {
   expect(() => foo({})).not.toThrow(TypeError)
 })
 
-test('object', () => {
+test('symbol', () => {
   function foo (a) {
     argType(a, types.symbol)
   }
@@ -56,6 +56,17 @@ test('object', () => {
   expect(() => foo([1, 2])).toThrow(TypeError)
   expect(() => foo({})).toThrow(TypeError)
   expect(() => foo(Symbol('lorem'))).not.toThrow(TypeError)
+})
+
+test('null', () => {
+  function foo (a) {
+    argType(a, types.null)
+  }
+
+  expect(() => foo(true)).toThrow(TypeError)
+  expect(() => foo(1)).toThrow(TypeError)
+  expect(() => foo([1, 2])).toThrow(TypeError)
+  expect(() => foo(null)).not.toThrow(TypeError)
 })
 
 test('instanceOf', () => {

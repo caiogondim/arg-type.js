@@ -44,6 +44,10 @@ argType.types = {
     if (typeFrom(arg) !== 'symbol') throw new TypeError(`Expected \`${arg}\` to be a symbol`)
     return true
   },
+  null: (arg) => {
+    if (typeFrom(arg) !== 'null') throw new TypeError(`Expected \`${arg}\` to be null`)
+    return true
+  },
   instanceOf: (constructor) => {
     // arg type here
     return (arg) => {

@@ -31,6 +31,7 @@ sum(1, '2') // => throws TypeError because '2' is not a Number
 - `types.number`
 - `types.object`
 - `types.string`
+- `types.null`
 - `types.symbol`
 - `types.instanceOf`
 - `types.oneOf`
