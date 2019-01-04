@@ -1,6 +1,6 @@
 {
   "name": "@caiogondim/arg-type",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Like prop-types, but for vanilla JavaScript",
   "main": "index.js",
   "dependencies": {
