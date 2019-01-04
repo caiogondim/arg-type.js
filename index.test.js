@@ -5,6 +5,18 @@
 const argType = require('./')
 const { types } = require('./')
 
+test('custom msg', () => {
+  function foo (a) {
+    argType(a, types.array, 'Lorem ipsum')
+  }
+
+  try {
+    foo(null)
+  } catch (err) {
+    expect(err.message).toEqual('Lorem ipsum')
+  }
+})
+
 test('array', () => {
   function foo (a) {
     argType(a, types.array)

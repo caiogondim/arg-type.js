@@ -6,66 +6,68 @@
 
 const typeFrom = require('type-from')
 
-function argType (arg, typeCheck) {
-  const isValid = typeCheck(arg)
+function argType (arg, typeCheck, msg) {
+  const isValid = typeCheck(arg, msg)
   // If your custom validation function doesn't thrown an error, a generic one
   // will be used.
   if (!isValid) {
-    throw new TypeError(`Expected \`${arg}\` to pass custom type validation.`)
+    throw new TypeError(msg || `Expected \`${arg}\` to pass custom type validation.`)
   }
 }
 
 argType.types = {
-  array: (arg) => {
-    if (typeFrom(arg) !== 'array') throw new TypeError(`Expected \`${arg}\` to be an array`)
+  array: (arg, msg = `Expected \`${arg}\` to be an array`) => {
+    if (typeFrom(arg) !== 'array') throw new TypeError(msg)
     return true
   },
-  bool: (arg) => {
-    if (typeFrom(arg) !== 'boolean') throw new TypeError(`Expected \`${arg}\` to be a boolean`)
+  bool: (arg, msg = `Expected \`${arg}\` to be a boolean`) => {
+    if (typeFrom(arg) !== 'boolean') throw new TypeError(msg)
     return true
   },
-  func: (arg) => {
-    if (typeFrom(arg) !== 'function') throw new TypeError(`Expected \`${arg}\` to be a function`)
+  func: (arg, msg = `Expected \`${arg}\` to be a function`) => {
+    if (typeFrom(arg) !== 'function') throw new TypeError(msg)
     return true
   },
-  number: (arg) => {
-    if (typeFrom(arg) !== 'number') throw new TypeError(`Expected \`${arg}\` to be a number`)
+  number: (arg, msg = `Expected \`${arg}\` to be a number`) => {
+    if (typeFrom(arg) !== 'number') throw new TypeError(msg)
     return true
   },
-  object: (arg) => {
-    if (typeFrom(arg) !== 'object') throw new TypeError(`Expected \`${arg}\` to be a object`)
+  object: (arg, msg = `Expected \`${arg}\` to be a object`) => {
+    if (typeFrom(arg) !== 'object') throw new TypeError(msg)
     return true
   },
-  string: (arg) => {
-    if (typeFrom(arg) !== 'string') throw new TypeError(`Expected \`${arg}\` to be a string`)
+  string: (arg, msg = `Expected \`${arg}\` to be a string`) => {
+    if (typeFrom(arg) !== 'string') throw new TypeError(msg)
     return true
   },
-  symbol: (arg) => {
-    if (typeFrom(arg) !== 'symbol') throw new TypeError(`Expected \`${arg}\` to be a symbol`)
+  symbol: (arg, msg) => {
+    if (typeFrom(arg) !== 'symbol') throw new TypeError(msg || `Expected \`${arg}\` to be a symbol`)
     return true
   },
-  null: (arg) => {
-    if (typeFrom(arg) !== 'null') throw new TypeError(`Expected \`${arg}\` to be null`)
+  null: (arg, msg = `Expected \`${arg}\` to be null`) => {
+    if (typeFrom(arg) !== 'null') throw new TypeError(msg)
     return true
   },
-  instanceOf: (constructor) => {
+  instanceOf: (constructor, msg) => {
     // arg type here
     return (arg) => {
-      if (!(arg instanceof constructor)) throw new TypeError(`Expected \`${arg}\` to be a instance of ${constructor}`)
-      return true
-    }
-  },
-  oneOf: (enumerated) => {
-    return (arg) => {
-      const isValid = enumerated.some(val => val === arg)
-
-      if (!isValid) {
-        throw new TypeError(`Expected \`${arg}\` to be one of ${enumerated}`)
+      if (!(arg instanceof constructor)) {
+        throw new TypeError(msg || `Expected \`${arg}\` to be a instance of ${constructor}`)
       }
       return true
     }
   },
-  oneOfType: (typeChecks) => {
+  oneOf: (enumerated, msg) => {
+    return (arg) => {
+      const isValid = enumerated.some(val => val === arg)
+
+      if (!isValid) {
+        throw new TypeError(msg || `Expected \`${arg}\` to be one of ${enumerated}`)
+      }
+      return true
+    }
+  },
+  oneOfType: (typeChecks, msg) => {
     return (arg) => {
       const isValid = typeChecks.some(typeCheck => {
         try {
@@ -77,33 +79,33 @@ argType.types = {
       })
 
       if (!isValid) {
-        throw new TypeError(`Invalid arg \`${arg}\` supplied`)
+        throw new TypeError(msg || `Invalid arg \`${arg}\` supplied`)
       }
 
       return true
     }
   },
-  arrayOf: (typeCheck) => {
+  arrayOf: (typeCheck, msg) => {
     return (args) => {
       const isValid = args.every(arg => {
         return typeCheck(arg)
       })
 
       if (!isValid) {
-        throw new TypeError(`Invalid arg \`${args}\` supplied`)
+        throw new TypeError(msg || `Invalid arg \`${args}\` supplied`)
       }
 
       return true
     }
   },
-  exact: (strictShape) => {
+  exact: (strictShape, msg) => {
     const strictShapeKeys = Object.keys(strictShape)
 
     return (arg) => {
       const argKeys = Object.keys(arg)
 
       if (strictShapeKeys.length !== argKeys.length) {
-        throw new TypeError(`Invalid exact shape of \`${arg}\``)
+        throw new TypeError(msg || `Invalid exact shape of \`${arg}\``)
       }
 
       const isValid = strictShapeKeys.every(strictShapeKey => {
@@ -117,7 +119,7 @@ argType.types = {
       })
 
       if (!isValid) {
-        throw new TypeError(`Invalid exact shape of \`${arg}\``)
+        throw new TypeError(msg || `Invalid exact shape of \`${arg}\``)
       }
 
       return true
