@@ -48,17 +48,17 @@ argType.types = {
     if (typeFrom(arg) !== 'null') throw new TypeError(msg)
     return true
   },
-  instanceOf: (constructor, msg) => {
+  instanceOf: (constructor) => {
     // arg type here
-    return (arg) => {
+    return (arg, msg) => {
       if (!(arg instanceof constructor)) {
         throw new TypeError(msg || `Expected \`${arg}\` to be a instance of ${constructor}`)
       }
       return true
     }
   },
-  oneOf: (enumerated, msg) => {
-    return (arg) => {
+  oneOf: (enumerated) => {
+    return (arg, msg) => {
       const isValid = enumerated.some(val => val === arg)
 
       if (!isValid) {
@@ -67,8 +67,8 @@ argType.types = {
       return true
     }
   },
-  oneOfType: (typeChecks, msg) => {
-    return (arg) => {
+  oneOfType: (typeChecks) => {
+    return (arg, msg) => {
       const isValid = typeChecks.some(typeCheck => {
         try {
           const output = typeCheck(arg)
@@ -85,8 +85,8 @@ argType.types = {
       return true
     }
   },
-  arrayOf: (typeCheck, msg) => {
-    return (args) => {
+  arrayOf: (typeCheck) => {
+    return (args, msg) => {
       const isValid = args.every(arg => {
         return typeCheck(arg)
       })
@@ -98,10 +98,10 @@ argType.types = {
       return true
     }
   },
-  exact: (strictShape, msg) => {
+  exact: (strictShape) => {
     const strictShapeKeys = Object.keys(strictShape)
 
-    return (arg) => {
+    return (arg, msg) => {
       const argKeys = Object.keys(arg)
 
       if (strictShapeKeys.length !== argKeys.length) {

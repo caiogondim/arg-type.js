@@ -5,26 +5,28 @@
 const argType = require('./')
 const { types } = require('./')
 
-test('custom msg', () => {
-  function foo (a) {
-    argType(a, types.array, 'Lorem ipsum')
-  }
+describe('array', () => {
+  test('basic', () => {
+    function foo (a) {
+      argType(a, types.array)
+    }
 
-  try {
-    foo(null)
-  } catch (err) {
-    expect(err.message).toEqual('Lorem ipsum')
-  }
-})
+    expect(() => foo(true)).toThrow(TypeError)
+    expect(() => foo(1)).toThrow(TypeError)
+    expect(() => foo([1, 2])).not.toThrow(TypeError)
+  })
 
-test('array', () => {
-  function foo (a) {
-    argType(a, types.array)
-  }
+  test('custom msg', () => {
+    function foo (a) {
+      argType(a, types.array, 'Lorem ipsum')
+    }
 
-  expect(() => foo(true)).toThrow(TypeError)
-  expect(() => foo(1)).toThrow(TypeError)
-  expect(() => foo([1, 2])).not.toThrow(TypeError)
+    try {
+      foo(null)
+    } catch (err) {
+      expect(err.message).toEqual('Lorem ipsum')
+    }
+  })
 })
 
 test('boolean', () => {
@@ -95,35 +97,70 @@ test('instanceOf', () => {
   expect(() => foo(bar)).not.toThrow(TypeError)
 })
 
-test('oneOf', () => {
-  function foo (a) {
-    argType(a, types.oneOf([1, 2, 3]))
-  }
+describe('oneOf', () => {
+  test('basic', () => {
+    function foo (a) {
+      argType(a, types.oneOf([1, 2, 3]))
+    }
 
-  expect(() => foo(1)).not.toThrow(TypeError)
-  expect(() => foo(2)).not.toThrow(TypeError)
-  expect(() => foo(3)).not.toThrow(TypeError)
-  expect(() => foo(4)).toThrow(TypeError)
+    expect(() => foo(1)).not.toThrow(TypeError)
+    expect(() => foo(2)).not.toThrow(TypeError)
+    expect(() => foo(3)).not.toThrow(TypeError)
+    expect(() => foo(4)).toThrow(TypeError)
+  })
+
+  test('custom msg', () => {
+    function foo (a) {
+      argType(a, types.oneOf([1, 2, 3]), 'Lorem ipsum')
+    }
+
+    try {
+      foo(null)
+    } catch (err) {
+      expect(err.message).toEqual('Lorem ipsum')
+    }
+  })
 })
 
-test('oneOfType', () => {
-  function isFunction (arg) {
-    return typeof arg === 'function'
-  }
+describe('oneOfType', () => {
+  test('basic', () => {
+    function isFunction (arg) {
+      return typeof arg === 'function'
+    }
 
-  function foo (a) {
-    argType(a, types.oneOfType([
-      types.number,
-      types.string,
-      isFunction
-    ]))
-  }
+    function foo (a) {
+      argType(a, types.oneOfType([
+        types.number,
+        types.string,
+        isFunction
+      ]))
+    }
 
-  expect(() => foo(1)).not.toThrow(TypeError)
-  expect(() => foo('abc')).not.toThrow(TypeError)
-  expect(() => foo(true)).toThrow(TypeError)
-  expect(() => foo([1, 2])).toThrow(TypeError)
-  expect(() => foo(() => {})).not.toThrow(TypeError)
+    expect(() => foo(1)).not.toThrow(TypeError)
+    expect(() => foo('abc')).not.toThrow(TypeError)
+    expect(() => foo(true)).toThrow(TypeError)
+    expect(() => foo([1, 2])).toThrow(TypeError)
+    expect(() => foo(() => {})).not.toThrow(TypeError)
+  })
+
+  test('custom msg', () => {
+    function foo (a) {
+      argType(
+        a,
+        types.oneOfType([
+          types.number,
+          types.string
+        ]),
+        'Lorem ipsum'
+      )
+    }
+
+    try {
+      foo(null)
+    } catch (err) {
+      expect(err.message).toEqual('Lorem ipsum')
+    }
+  })
 })
 
 test('arrayOf', () => {
