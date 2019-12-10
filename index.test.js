@@ -47,6 +47,7 @@ test('number', () => {
   expect(() => foo(true)).toThrow(TypeError)
   expect(() => foo(1)).not.toThrow(TypeError)
   expect(() => foo([1, 2])).toThrow(TypeError)
+  expect(() => foo(NaN)).toThrow(TypeError)
 })
 
 test('object', () => {

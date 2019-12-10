@@ -29,7 +29,7 @@ argType.types = {
     return true
   },
   number: (arg, msg = `Expected \`${arg}\` to be a number`) => {
-    if (typeFrom(arg) !== 'number') throw new TypeError(msg)
+    if (typeFrom(arg) !== 'number' || Number.isNaN(arg)) throw new TypeError(msg)
     return true
   },
   object: (arg, msg = `Expected \`${arg}\` to be a object`) => {
